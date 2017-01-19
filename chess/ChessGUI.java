@@ -81,7 +81,7 @@ public class ChessGUI extends JFrame implements ActionListener{
                                 int legalCol = legals.get(k).c();
                                 int legalId = getIndex(legalRow, legalCol);                            
 
-                                if (0 <= legalId && legalId < (row * col) - 1){
+                                if (0 <= legalId && legalId < row * col){
                                     if (buttons[legalId].hasPiece()){
                                         if (buttons[legalId].isEnemyOf(currentPlayer)){
                                             buttons[legalId].setColor(Color.BLUE); // edible

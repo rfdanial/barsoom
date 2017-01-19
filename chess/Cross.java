@@ -43,6 +43,14 @@ public class Cross extends Piece {
             }
         }
         
+        System.out.println("\nCurrent RowCol: " + nowY + ", " + nowX + "\n");
+        for(int i = 0; i < legals.size(); i++){
+            RowCol rc = legals.get(i);
+            System.out.println(i + ") " + rc.r() + ", " + rc.c());
+        }
+        
+        System.out.println('\n');
+        
         return legals;
     }
     
