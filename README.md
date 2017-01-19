@@ -38,9 +38,12 @@ Fix:
 
 - Setiap 4 gerakan, Star dengan Cross dah boleh swap type.
 
+- Cross dengan Star dah kenal Row 7, Col 4
+
+
 Isu:
 
-- Cross dengan Star, dia tengah keling, tak kenal Row 7, Col 4.
+- Takde isu buat masa sekarang
 
 Nota:
 
