@@ -28,6 +28,10 @@ Fix:
 
 - Cross punya pergerakkan aku dah baiki.
 
+- Player 1 dengan Player2 dah boleh tukar giliran.
+
+- Setiap 4 gerakan, Star dengan Cross dah boleh swap type.
+
 Isu:
 
 - Cross dengan Star, dia tengah keling, tak kenal Row 7, Col 4.
