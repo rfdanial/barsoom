@@ -20,6 +20,8 @@
 
 Benda kita kena buat:
 
+- TextLabel untuk display sekarang turn siapa, dan giliran yang ke berapa.
+
 - MessageBox untuk Pause: akan ada 2 butang; NewGame dan ExitGame
 
 - MessageBox untuk print player mana yang menang
