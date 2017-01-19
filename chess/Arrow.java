@@ -37,12 +37,12 @@ public class Arrow extends Piece {
         
         // this will determine the legal rowcols
         if (down){ // going down            
-            for(int i = nowY; i <= nowY + 2; i++){
+            for(int i = nowY + 1; i <= nowY + 2; i++){
                 if (0 <= i && i < 8)
                     legals.add(new RowCol(i, nowX));
             }
         } else { // going up
-            for(int i = nowY; nowY - 2 <= i; i--){
+            for(int i = nowY - 1; nowY - 2 <= i; i--){
                 if (0 <= i && i < 8)
                     legals.add(new RowCol(i, nowX));
             }

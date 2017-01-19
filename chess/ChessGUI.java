@@ -43,8 +43,8 @@ public class ChessGUI extends JFrame implements ActionListener{
         super("Barsoom Chess by Team Chill");
         buttons = new Box[row * col];
         
-        p1 = new Player("p1", true);
-        p2 = new Player("p2", false);
+        p1 = new Player("Player 1", true);
+        p2 = new Player("Player 2", false);
         currentPlayer = p1;
         JPanel buttonPanel = createButtonsOnBoard();        
         
@@ -71,36 +71,53 @@ public class ChessGUI extends JFrame implements ActionListener{
                     int nowIndex = getIndex(r, c);
                     
                     if (now == null){
-                        now = buttons[nowIndex];
+                        if (buttons[nowIndex].hasPiece() && buttons[nowIndex].isEnemyOf(currentPlayer) == false){
+                            now = buttons[nowIndex];
                         
-                        ArrayList<RowCol> legals = now.getPiece().legals(c, r);
-                        
-                        for(int k = 0; k < legals.size(); k++){
-                            int legalRow = legals.get(k).r();
-                            int legalCol = legals.get(k).c();
-                            int legalId = getIndex(legalRow, legalCol);                            
-                            
-                            if (buttons[legalId].hasPiece()){
-                                if (buttons[legalId].isEnemyOf(currentPlayer)){
-                                    buttons[legalId].setColor(Color.BLUE); // edible
-                                } else {
-                                    buttons[legalId].setColor(Color.GRAY); // cant move here, because his
+                            ArrayList<RowCol> legals = now.getPiece().legals(c, r);
+
+                            for(int k = 0; k < legals.size(); k++){
+                                int legalRow = legals.get(k).r();
+                                int legalCol = legals.get(k).c();
+                                int legalId = getIndex(legalRow, legalCol);                            
+
+                                if (0 <= legalId && legalId < (row * col) - 1){
+                                    if (buttons[legalId].hasPiece()){
+                                        if (buttons[legalId].isEnemyOf(currentPlayer)){
+                                            buttons[legalId].setColor(Color.BLUE); // edible
+                                        }
+                                    } else {
+                                        buttons[legalId].setColor(Color.GREEN); // moveable
+                                    }
                                 }
-                            } else {
-                                buttons[legalId].setColor(Color.GREEN); // moveable
                             }
-                        }
-                        
-                        desired = null;
+
+                            desired = null;
+                        }                        
                     } else if (desired == null){
                         desired = buttons[nowIndex];                        
                         
-                        if (desired.getColor().equals(Color.BLUE) || desired.getColor().equals(Color.GREEN)){
-                            // edible / moveable
+                        if (desired.getColor() != null){
+                            // edible / moveable, count as turn
                             desired.setPiece(now.getPiece());
                             now.deset();
+                            
+                            turn++;
+                            
+                            if (turn % 4 == 0){
+                                // swap star with cross
+                                swapStarCross(p1);
+                                swapStarCross(p2);
+                            }
+                            
+                            if (currentPlayer.equals(p1)){
+                                currentPlayer = p2;
+                            } else {
+                                currentPlayer = p1;
+                            }
+                            
                         } else {
-                            // illegal
+                            // illegal, not count as turn, cancelling move
                         }
                         
                         desired = null;
@@ -116,7 +133,7 @@ public class ChessGUI extends JFrame implements ActionListener{
             buttonPanel.add(buttons[i]);
         }
         
-        initPieces();
+        newBoard();
         
         return buttonPanel;
     }
@@ -127,7 +144,29 @@ public class ChessGUI extends JFrame implements ActionListener{
         //To change body of generated methods, choose Tools | Templates.
     }
     
-    public void initPieces(){
+    public void swapStarCross(Player player){
+        for(int i = 0; i < row * col; i++){
+            if (buttons[i].hasPiece()){
+                Piece piece = buttons[i].getPiece();
+                Player owner = piece.getOwner();
+                String type = piece.toString();
+
+                if (owner.equals(player)){
+                    if (type.equals("Star")){
+                        buttons[i].setPiece(new Cross(player));
+                    } else if (type.equals("Cross")){
+                        buttons[i].setPiece(new Star(player));
+                    }
+                }
+            }
+        }
+    }
+    
+    public void newBoard(){
+        for(int i = 0; i < row * col; i++){
+            buttons[i].deset();
+        }
+        
         buttons[getIndex(0, 0)].setPiece(new Star(p1));
         buttons[getIndex(0, 1)].setPiece(new Cross(p1));
         buttons[getIndex(0, 2)].setPiece(new Heart(p1));
@@ -147,6 +186,8 @@ public class ChessGUI extends JFrame implements ActionListener{
         buttons[getIndex(7, 2)].setPiece(new Heart(p2));
         buttons[getIndex(7, 3)].setPiece(new Cross(p2));
         buttons[getIndex(7, 4)].setPiece(new Star(p2));
+        
+        turn = 0;
     }
     
     public boolean hasHeart(Player player){
