@@ -24,6 +24,10 @@ Benda kita kena buat:
 
 - MessageBox untuk print player mana yang menang
 
+- UML
+
+- Report
+
 Fix:
 
 - Cross punya pergerakkan aku dah baiki.
