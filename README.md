@@ -1,14 +1,4 @@
-# barsoom
-barsoomChess
-
-TEAM: CHILL
-
-MEMBER:
-ARIF
-HAMIZAN
-SHUKRI
-SYAWAL
-HAZIQ
+# barsoom by Team Chill(Arif, Hamizan, Haziq, Shukri, Syawal)
 
 "Arif, camne nak run?"
 
@@ -26,14 +16,21 @@ HAZIQ
 
 7) Run guna "java Chess"
 
+-------
 
 Benda kita kena buat:
 
-- tbh, aku pun taktau.
+- MessageBox untuk Pause: akan ada 2 butang; NewGame dan ExitGame
+
+- MessageBox untuk print player mana yang menang
+
+Fix:
+
+- Cross punya pergerakkan aku dah baiki.
 
 Isu:
 
-- Cross punya buah; kita kena baiki cara dia tentukan ke petak mana dia boleh pergi
+- Cross dengan Star, dia tengah keling, tak kenal Row 7, Col 4.
 
 Nota:
 
