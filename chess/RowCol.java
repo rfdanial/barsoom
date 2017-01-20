@@ -24,12 +24,4 @@ public class RowCol {
     public int c(){
         return this.c;
     }
-    
-    public boolean check(int row, int col){
-        return this.r == row && this.c == col;
-    }
-    
-    public boolean check(RowCol rc){
-        return this.r == rc.r() && this.c == rc.c();
-    }
 }

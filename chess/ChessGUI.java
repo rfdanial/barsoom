@@ -4,41 +4,50 @@
  * and open the template in the editor.
  */
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Random;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 
 /**
  *
  * @author rfd lab
  */
-public class ChessGUI extends JFrame implements ActionListener{
+public class ChessGUI extends JFrame{
     
     private static final int row = 8;
     private static final int col = 5;   
     
     private int turn;
+    
     private Player p1;
     private Player p2; 
     private Player currentPlayer;
-    private Player winner;
     
     private Box now;
     private Box desired;
-    
     private Box[] buttons;
+    
+    private JLabel topLbl = new JLabel("Turn: ");
     
     public ChessGUI(){
         super("Barsoom Chess by Team Chill");
@@ -46,16 +55,61 @@ public class ChessGUI extends JFrame implements ActionListener{
         
         p1 = new Player("White", true);
         p2 = new Player("Black", false);
-        currentPlayer = p1;
-        JPanel buttonPanel = createButtonsOnBoard();        
         
-        buttons[0].setBackground(null);
+        JPanel content = new JPanel(new BorderLayout());
         
-        setContentPane(buttonPanel);        
-        pack();
-        setVisible(true);
+        content.add(topLbl, BorderLayout.NORTH);
+        content.add(createButtonsOnBoard(), BorderLayout.CENTER);
         
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        newGame();
+        
+        this.setJMenuBar(createTopMenu());
+        this.setContentPane(content);        
+        this.pack();
+        this.setVisible(true);
+        
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+    }
+    
+    public JMenuBar createTopMenu(){
+        JMenuBar menuBar = new JMenuBar();
+        
+        JMenu menu = new JMenu("Menu");
+        menu.setMnemonic(KeyEvent.VK_M);
+        
+        JMenuItem newGameButton = new JMenuItem("New Game", KeyEvent.VK_N);
+        newGameButton.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
+        newGameButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                newGame();
+            }
+        });
+        
+        menu.add(newGameButton);
+        
+        JMenuItem howButton = new JMenuItem("How to Play", KeyEvent.VK_H);
+        howButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                
+            }
+        });
+        
+        menu.add(howButton);
+        
+        JMenuItem aboutButton = new JMenuItem("About this software", KeyEvent.VK_A);
+        aboutButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                
+            }
+        });
+        
+        menu.add(aboutButton);
+        
+        menuBar.add(menu);
+        return menuBar;
     }
     
     public JPanel createButtonsOnBoard(){
@@ -74,7 +128,7 @@ public class ChessGUI extends JFrame implements ActionListener{
                     int nowIndex = getIndex(r, c);
                     
                     if (now == null){
-                        if (buttons[nowIndex].hasPiece() && buttons[nowIndex].isThisPlayer(currentPlayer )){
+                        if (buttons[nowIndex].hasPiece() && buttons[nowIndex].isThisPlayer(currentPlayer)){
                             now = buttons[nowIndex];
                         
                             ArrayList<RowCol> legals = now.getPiece().legals(c, r);
@@ -105,10 +159,9 @@ public class ChessGUI extends JFrame implements ActionListener{
                             if (desired.hasPiece()){
                                 Piece piece = desired.getPiece();
                                 if (piece.toString().equals("Heart")){
-                                    winner = currentPlayer;
-                                    
-                                    JOptionPane.showMessageDialog(null, "Winner: " + winner.getName() + "!\nPress 'OK' to restart a new Game.", "GAME OVER", JOptionPane.WARNING_MESSAGE);
-                                    newBoard();
+                                    showSimpleDialog("Winner: " + currentPlayer.getName() + "!\nPress 'OK' to restart a new Game.", "GAME OVER");
+                                    newGame();
+                                    return;
                                 }
                             }
                             
@@ -117,20 +170,21 @@ public class ChessGUI extends JFrame implements ActionListener{
                             
                             turn++;
                             
+                            
+                            // swap star with cross and vice versa, for each 4 turns
                             if (turn % 4 == 0){
-                                // swap star with cross
                                 swapStarCross(p1);
                                 swapStarCross(p2);
                             }
                             
+                            // swap turns between players
                             if (currentPlayer.equals(p1)){
                                 currentPlayer = p2;
                             } else {
                                 currentPlayer = p1;
                             }
                             
-                        } else {
-                            // illegal, not count as turn; move cancelled
+                            topLbl.setText("Turn: " + currentPlayer.getName() + ", turn count: " + turn);
                         }
                         
                         desired = null;
@@ -146,16 +200,8 @@ public class ChessGUI extends JFrame implements ActionListener{
             buttonPanel.add(buttons[i]);
         }
         
-        newBoard();
-        
         return buttonPanel;
-    }
-    
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); 
-        //To change body of generated methods, choose Tools | Templates.
-    }
+    }    
     
     public void swapStarCross(Player player){
         for(int i = 0; i < row * col; i++){
@@ -175,11 +221,34 @@ public class ChessGUI extends JFrame implements ActionListener{
         }
     }
     
-    public void newBoard(){
-        for(int i = 0; i < row * col; i++){
-            buttons[i].deset();
+    private void newGame(){
+        
+        // this will randomly pick who starts the move first
+        Random rnd = new Random(System.currentTimeMillis());
+        int val = rnd.nextInt(10);
+        
+        if (val > 4){
+            currentPlayer = p2;
+        } else {
+            currentPlayer = p1;
         }
         
+        // reset
+        turn = 0;
+        now = desired = null;
+        
+        topLbl.setText("Turn: " + currentPlayer.getName() + ", turn count: " + turn);
+        
+        // inform who starts first
+        showSimpleDialog(currentPlayer.getName() + " starts first!", "NEW GAME");
+        
+        //clear all the pieces from the board
+        for(int i = 0; i < row * col; i++){
+            buttons[i].deset();
+            buttons[i].setColor(null);
+        }
+        
+        // initialize the position of the pieces
         buttons[getIndex(0, 0)].setPiece(new Star(p1));
         buttons[getIndex(0, 1)].setPiece(new Cross(p1));
         buttons[getIndex(0, 2)].setPiece(new Heart(p1));
@@ -199,25 +268,10 @@ public class ChessGUI extends JFrame implements ActionListener{
         buttons[getIndex(7, 2)].setPiece(new Heart(p2));
         buttons[getIndex(7, 3)].setPiece(new Cross(p2));
         buttons[getIndex(7, 4)].setPiece(new Star(p2));
-        
-        turn = 0;
     }
     
-    public boolean hasHeart(Player player){
-        
-        for (int k = 0; k < row * col; k++){
-            if (buttons[k].hasPiece()){
-                Piece piece = buttons[k].getPiece();
-                Player owner = piece.getOwner();
-                String type = piece.toString();
-
-                if (player.equals(owner) && type.equals("Heart")){
-                    return true;
-                }
-            }
-        }
-        
-        return false;
+    public void showSimpleDialog(String message, String title){
+        JOptionPane.showMessageDialog(this, message, title, JOptionPane.INFORMATION_MESSAGE);
     }
     
     public void playAudio(String audioPath){

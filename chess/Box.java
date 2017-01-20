@@ -21,8 +21,6 @@ public class Box extends JButton{
         if (piece != null){
             setPiece(piece);
         }
-        
-        color = Color.GRAY;
     }
     
     public void setPiece(Piece piece){
