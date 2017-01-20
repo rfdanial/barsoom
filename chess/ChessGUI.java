@@ -17,6 +17,7 @@ import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -43,8 +44,8 @@ public class ChessGUI extends JFrame implements ActionListener{
         super("Barsoom Chess by Team Chill");
         buttons = new Box[row * col];
         
-        p1 = new Player("Player 1", true);
-        p2 = new Player("Player 2", false);
+        p1 = new Player("White", true);
+        p2 = new Player("Black", false);
         currentPlayer = p1;
         JPanel buttonPanel = createButtonsOnBoard();        
         
@@ -53,6 +54,8 @@ public class ChessGUI extends JFrame implements ActionListener{
         setContentPane(buttonPanel);        
         pack();
         setVisible(true);
+        
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
     
     public JPanel createButtonsOnBoard(){
@@ -71,7 +74,7 @@ public class ChessGUI extends JFrame implements ActionListener{
                     int nowIndex = getIndex(r, c);
                     
                     if (now == null){
-                        if (buttons[nowIndex].hasPiece() && buttons[nowIndex].isEnemyOf(currentPlayer) == false){
+                        if (buttons[nowIndex].hasPiece() && buttons[nowIndex].isThisPlayer(currentPlayer )){
                             now = buttons[nowIndex];
                         
                             ArrayList<RowCol> legals = now.getPiece().legals(c, r);
@@ -83,7 +86,7 @@ public class ChessGUI extends JFrame implements ActionListener{
 
                                 if (0 <= legalId && legalId < row * col){
                                     if (buttons[legalId].hasPiece()){
-                                        if (buttons[legalId].isEnemyOf(currentPlayer)){
+                                        if (buttons[legalId].isThisPlayer(currentPlayer) == false){
                                             buttons[legalId].setColor(Color.BLUE); // edible
                                         }
                                     } else {
@@ -99,6 +102,16 @@ public class ChessGUI extends JFrame implements ActionListener{
                         
                         if (desired.getColor() != null){
                             // edible / moveable, count as turn
+                            if (desired.hasPiece()){
+                                Piece piece = desired.getPiece();
+                                if (piece.toString().equals("Heart")){
+                                    winner = currentPlayer;
+                                    
+                                    JOptionPane.showMessageDialog(null, "Winner: " + winner.getName() + "!\nPress 'OK' to restart a new Game.", "GAME OVER", JOptionPane.WARNING_MESSAGE);
+                                    newBoard();
+                                }
+                            }
+                            
                             desired.setPiece(now.getPiece());
                             now.deset();
                             
@@ -117,7 +130,7 @@ public class ChessGUI extends JFrame implements ActionListener{
                             }
                             
                         } else {
-                            // illegal, not count as turn, cancelling move
+                            // illegal, not count as turn; move cancelled
                         }
                         
                         desired = null;

@@ -21,7 +21,7 @@ public class Cross extends Piece {
     public ArrayList<RowCol> legals(int nowX, int nowY){
         ArrayList<RowCol> legals = new ArrayList();        
                 
-        for(int i = 1; i < 6; i++){            
+        for(int i = 1; i < 5; i++){            
             if (0 <= nowY - i){ // top
                 if (0 <= nowX - i){
                     legals.add(new RowCol(nowY - i, nowX - i));
@@ -43,6 +43,7 @@ public class Cross extends Piece {
             }
         }
         
+        /*
         System.out.println("\nCurrent RowCol: " + nowY + ", " + nowX + "\n");
         for(int i = 0; i < legals.size(); i++){
             RowCol rc = legals.get(i);
@@ -50,6 +51,7 @@ public class Cross extends Piece {
         }
         
         System.out.println('\n');
+        */
         
         return legals;
     }

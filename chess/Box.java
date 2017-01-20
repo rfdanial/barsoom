@@ -39,8 +39,8 @@ public class Box extends JButton{
         return this.piece != null;
     }
     
-    public boolean isEnemyOf(Player current){
-        return this.piece.getOwner().getName().equals(current.getName());
+    public boolean isThisPlayer(Player player){
+        return this.piece.getOwner().getName().equals(player.getName());
     }
     
     public Piece getPiece(){
