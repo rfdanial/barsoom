@@ -23,8 +23,6 @@ Benda kita kena buat:
 
 - DialogBox untuk 'About this software'
 
-- Text (JLabel) untuk display sekarang turn siapa, dan giliran yang ke berapa.
-
 - UML
 
 - Report
