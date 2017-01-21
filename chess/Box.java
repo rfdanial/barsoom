@@ -54,7 +54,7 @@ public class Box extends JButton{
         this.color = color;
     }
     
-    private ImageIcon loadImage(String path){
+    public ImageIcon loadImage(String path){
         Image image = new ImageIcon(this.getClass().getResource(path)).getImage();
         Image scaledImage = image.getScaledInstance(50, 50, java.awt.Image.SCALE_SMOOTH);
         return new ImageIcon(scaledImage);

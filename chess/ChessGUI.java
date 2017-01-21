@@ -4,29 +4,14 @@
  * and open the template in the editor.
  */
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
+
+import java.awt.*;
+import java.awt.event.*;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Random;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.KeyStroke;
+import java.util.*;
+import javax.sound.sampled.*;
+import javax.swing.*;
+
 
 /**
  *
@@ -59,7 +44,7 @@ public class ChessGUI extends JFrame{
         JPanel content = new JPanel(new BorderLayout());
         
         content.add(topLbl, BorderLayout.NORTH);
-        content.add(createButtonsOnBoard(), BorderLayout.CENTER);
+        content.add(createBoxes(), BorderLayout.CENTER);
         
         newGame();
         
@@ -92,7 +77,22 @@ public class ChessGUI extends JFrame{
         howButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){
+                JPanel panel = new JPanel(new GridLayout(10, 1, 2, 2));
+                panel.add(new JLabel(buttons[0].loadImage("blackHeart.png")));
+                panel.add(new JLabel("This is the Heart. The Heart can move only 1 step in any direction. The game ends when the heart is captured by the other side.", JLabel.CENTER));
                 
+                panel.add(new JLabel(buttons[0].loadImage("blackArrow.png")));
+                panel.add(new JLabel("This is the Arrow. The Arrow can only move forward, 1 or 2 steps. If it reaches the end of the board, it turns around and starts heading back the other way.", JLabel.CENTER));
+
+                panel.add(new JLabel(buttons[0].loadImage("blackCross.png")));
+                panel.add(new JLabel("This is the Cross. The Cross can only move diagonally, but can go any distance.", JLabel.CENTER));
+
+                panel.add(new JLabel(buttons[0].loadImage("blackStar.png")));
+                panel.add(new JLabel("This is the Star. The Star can move 1 or 2 steps in any direction.", JLabel.CENTER));
+                
+                panel.add(new JLabel("The Cross will change to Star and vice versa for each 4 moves.", JLabel.CENTER));
+                
+                showSimpleDialog(panel, "HOW TO PLAY THIS SHIT GAME");
             }
         });
         
@@ -102,7 +102,18 @@ public class ChessGUI extends JFrame{
         aboutButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){
+                String msg = 
+                        "Barsoom Chess version 1.0\n"+
+                        "developed by Team Chill\n\n"+
+                        "Team Member:\n"+
+                        "- 1142702426 Mohd Arif Danial\n"+
+                        "- 1142702491 Shukri Armizi\n"+
+                        "- 1142700818 Syawaludin Anas Yusof\n"+
+                        "- 1142702495 Hamizan Adli\n"+
+                        "- 1141126629 Ahmad Haziq Khan\n\n"+
+                        "© 2017\n";
                 
+                showSimpleDialog(msg, "About this software");
             }
         });
         
@@ -112,7 +123,7 @@ public class ChessGUI extends JFrame{
         return menuBar;
     }
     
-    public JPanel createButtonsOnBoard(){
+    public JPanel createBoxes(){
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(row, col, 2, 2));
         
@@ -170,7 +181,6 @@ public class ChessGUI extends JFrame{
                             
                             turn++;
                             
-                            
                             // swap star with cross and vice versa, for each 4 turns
                             if (turn % 4 == 0){
                                 swapStarCross(p1);
@@ -187,8 +197,7 @@ public class ChessGUI extends JFrame{
                             topLbl.setText("Turn: " + currentPlayer.getName() + ", turn count: " + turn);
                         }
                         
-                        desired = null;
-                        now = null;
+                        now = desired = null;
                         
                         for(int k = 0; k < row * col; k++){
                             buttons[k].setColor(null);
@@ -270,7 +279,7 @@ public class ChessGUI extends JFrame{
         buttons[getIndex(7, 4)].setPiece(new Star(p2));
     }
     
-    public void showSimpleDialog(String message, String title){
+    public void showSimpleDialog(Object message, String title){
         JOptionPane.showMessageDialog(this, message, title, JOptionPane.INFORMATION_MESSAGE);
     }
     
