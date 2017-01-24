@@ -1,22 +1,30 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 import java.util.ArrayList;
 
 /**
- *
- * @author rfd lab
+ * This is Cross, one of the Piece inside the Barsoom Chess
+ * RULE: 
+ * The Cross can only move diagonally, but can go any distance.
+ * 
+ * @author Mohd Arif Danial
  */
 public class Cross extends Piece {
     
-    //The Cross can only move diagonally, but can go any distance.
+    /**
+     * Constructor of Cross
+     * @param owner Player that owns this piece
+     */
     public Cross(Player owner){
         super(owner);
     }
     
+    /**
+     * This will return a number of RowCol objects to determine
+     * other legal position(s) based on the current position inside the grid.
+     * 
+     * @param nowX the current column inside the grid
+     * @param nowY the current row inside the grid
+     * @return an ArrayList of rows and columns of legal positions based on current row and column
+     */
     @Override
     public ArrayList<RowCol> legals(int nowX, int nowY){
         ArrayList<RowCol> legals = new ArrayList();        
@@ -46,6 +54,10 @@ public class Cross extends Piece {
         return legals;
     }
     
+    /**
+     * Get the filename of the image based on the owner's isWhite
+     * @return a string that represents the file name of the image
+     */
     @Override
     public String getFilename(){
         if (isWhite()){
@@ -55,6 +67,10 @@ public class Cross extends Piece {
         }
     }
     
+    /**
+     * Get the type of piece
+     * @return a string that represents the type of this piece
+     */
     @Override
     public String toString() {
         return "Cross";
