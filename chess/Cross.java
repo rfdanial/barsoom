@@ -1,3 +1,5 @@
+package chess;
+
 import java.util.ArrayList;
 
 /**
@@ -27,7 +29,7 @@ public class Cross extends Piece {
      */
     @Override
     public ArrayList<RowCol> legals(int nowX, int nowY){
-        ArrayList<RowCol> legals = new ArrayList();        
+        ArrayList<RowCol> legals = new ArrayList<RowCol>();        
                 
         for(int i = 1; i < 5; i++){            
             if (0 <= nowY - i){ // top

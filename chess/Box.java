@@ -1,3 +1,5 @@
+package chess;
+
 import java.awt.Color;
 import java.awt.Image;
 import javax.swing.ImageIcon;
@@ -80,6 +82,7 @@ public class Box extends JButton{
     
     /**
      * Set the Box's background color.
+     * 
      * @param color the desired color
      */
     public void setColor(Color color){

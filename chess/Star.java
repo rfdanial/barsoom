@@ -1,3 +1,5 @@
+package chess;
+
 import java.util.ArrayList;
 
 /**
@@ -27,7 +29,7 @@ public class Star extends Piece {
      */
     @Override
     public ArrayList<RowCol> legals(int nowX, int nowY){
-        ArrayList<RowCol> legals = new ArrayList();
+        ArrayList<RowCol> legals = new ArrayList<RowCol>();
         
         for(int y = nowY - 2; y <= nowY + 2; y++){
             for (int x = nowX - 2; x <= nowX + 2; x++){

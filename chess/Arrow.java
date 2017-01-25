@@ -1,3 +1,5 @@
+package chess;
+
 import java.util.ArrayList;
 
 /**
@@ -34,7 +36,7 @@ public class Arrow extends Piece {
     @Override
     public ArrayList<RowCol> legals(int nowX, int nowY){
         // list of legal rowcols
-        ArrayList<RowCol> legals = new ArrayList();
+        ArrayList<RowCol> legals = new ArrayList<RowCol>();
         
         // this will determine which direction the arrow is going
         if (nowY == 7){
