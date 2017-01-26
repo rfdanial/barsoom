@@ -1,4 +1,3 @@
-package chess;
 
 import java.util.ArrayList;
 
@@ -7,7 +6,7 @@ import java.util.ArrayList;
  * RULE: 
  * The Cross can only move diagonally, but can go any distance.
  * 
- * @author Mohd Arif Danial
+ * @author
  */
 public class Cross extends Piece {
     

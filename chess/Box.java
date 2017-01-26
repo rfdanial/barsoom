@@ -1,4 +1,3 @@
-package chess;
 
 import java.awt.Color;
 import java.awt.Image;
@@ -6,9 +5,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 /**
- * Provides data for buttons inside the grid layout
+ * Provides data for each Box inside the grid layout
  * 
- * @author rfd lab
+ * @author 
  */
 public class Box extends JButton{
     private Piece piece;

@@ -1,4 +1,3 @@
-package chess;
 
 /**
  * Provides data for each player that is participating in a game.

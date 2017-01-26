@@ -1,8 +1,7 @@
-package chess;
 
 /**
  * Provides data to determine the position of an object inside the GridLayout
- * @author Mohd Arif Danial
+ * @author 
  */
 public class RowCol {
     private int r;

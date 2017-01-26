@@ -1,4 +1,3 @@
-package chess;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -54,7 +53,6 @@ public class Chess extends JFrame{
         JMenuBar menuBar = new JMenuBar();
         
         JMenu menu = new JMenu("Menu");
-        menu.setMnemonic(KeyEvent.VK_M);
         
         JMenuItem newGameButton = new JMenuItem("New Game");
         newGameButton.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
@@ -66,6 +64,30 @@ public class Chess extends JFrame{
         });
         
         menu.add(newGameButton);
+        
+        JMenuItem saveGameButton = new JMenuItem("Save game");
+        saveGameButton.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
+        saveGameButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                game.saveGame();
+            }
+        });
+        
+        menu.add(saveGameButton);
+        
+        JMenuItem loadGameButton = new JMenuItem("Load last game");
+        loadGameButton.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.CTRL_MASK));
+        loadGameButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                game.loadGame();
+            }
+        });
+        
+        menu.add(loadGameButton);
+        
+        JMenu help = new JMenu("Help");
         
         JMenuItem howButton = new JMenuItem("How to Play");
         howButton.addActionListener(new ActionListener(){
@@ -93,7 +115,7 @@ public class Chess extends JFrame{
             }
         });
         
-        menu.add(howButton);
+        help.add(howButton);
         
         JMenuItem aboutButton = new JMenuItem("About");
         aboutButton.addActionListener(new ActionListener(){
@@ -114,14 +136,16 @@ public class Chess extends JFrame{
             }
         });
         
-        menu.add(aboutButton);
+        help.add(aboutButton);
         
         menuBar.add(menu);
+        menuBar.add(help);
         return menuBar;
     }
     
     /**
      * Show a DialogBox
+     * 
      * @param message The message to be shown
      * @param title The title of the dialogBox
      */
@@ -131,6 +155,7 @@ public class Chess extends JFrame{
     
     /**
      * Plays the audio based on the file path of the audio given
+     * 
      * @param audioPath the file path inside the folder containing the source files/.
      */
     public static void playAudio(String audioPath){

@@ -1,4 +1,3 @@
-package chess;
 
 import java.util.ArrayList;
 
@@ -20,9 +19,9 @@ public class Arrow extends Piece {
      * @param owner Player that owns this piece
      * @param down the direction of this piece is heading
      */
-    public Arrow(Player owner, boolean down){
+    public Arrow(Player owner){
         super(owner);
-        this.down = down;
+        this.down = false;
     }
     
     /**
