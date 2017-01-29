@@ -2,6 +2,8 @@
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.JLabel;
@@ -17,8 +19,8 @@ public class Game{
     private final static String SAVEFILE = "save.txt";
     
     private int turn;
-    private Player p1;
-    private Player p2;
+    private Player white;
+    private Player black;
     private Player currentPlayer;
     
     private Box now;
@@ -32,8 +34,8 @@ public class Game{
      */
     public Game(){
         turn = 0;
-        p1 = new Player("White", true);
-        p2 = new Player("Black", false);
+        white = new Player("White", true);
+        black = new Player("Black", false);
         
         initBoard();
         reset();
@@ -48,9 +50,15 @@ public class Game{
     
     /**
      * Load the previous progress of the game.
+     * @return true if there's a previous progress, false if there's none
      */
-    public void loadGame(){
-        
+    public boolean loadGame(){
+        try{
+            FileReader reader = new FileReader(SAVEFILE);
+            return true;
+        } catch (Exception ex){
+            return false;
+        }
     }
     
     /**
@@ -134,11 +142,11 @@ public class Game{
         int val = rnd.nextInt(10);
         
         if (val > 4){
-            currentPlayer = p2;
-            nextPlayer = p1;
+            currentPlayer = black;
+            nextPlayer = white;
         } else {
-            currentPlayer = p1;
-            nextPlayer = p2;
+            currentPlayer = white;
+            nextPlayer = black;
         }
         
         // reset
@@ -173,7 +181,7 @@ public class Game{
         board[getIndex(7, 3)].setPiece(new Cross(currentPlayer));
         board[getIndex(7, 4)].setPiece(new Star(currentPlayer));
         
-        label.setText("Turn: " + currentPlayer.getName() + ", Turn Count: " + turn);
+        updateLabel();
     }
     
     /**
@@ -201,20 +209,19 @@ public class Game{
                             
         // swap star with cross and vice versa, for each 4 turns
         if (turn % 4 == 0){
-            swapStarCross(p1);
-            swapStarCross(p2);
+            swapStarCross(white);
+            swapStarCross(black);
         }
 
         // swap turns between players
-        if (currentPlayer.equals(p1)){
-            currentPlayer = p2;
+        if (currentPlayer.equals(white)){
+            currentPlayer = black;
         } else {
-            currentPlayer = p1;
+            currentPlayer = white;
         }
         
         rotateBoard();
-        
-        label.setText("Turn: " + currentPlayer.getName() + ", Turn Count: " + turn);
+        updateLabel();
     }
     
     /**
@@ -245,6 +252,10 @@ public class Game{
         }
     }    
     
+    private void updateLabel(){
+        label.setText("Turn count: " + turn + ", Current player: " + currentPlayer.getName());
+    }
+    
     /**
      * Swap the Star with the Cross, and the Cross with the Star based on the passed Player
      * 
@@ -266,6 +277,29 @@ public class Game{
                 }
             }
         }
+    }
+    
+    /**
+     * Set a new name for a Player based on the Player's isWhite (side)
+     * @param name the new name to set to a Player
+     * @param isWhite the side of the Player to identify which Player to update
+     */
+    public void setPlayerName(String name, boolean isWhite){
+        if (isWhite) {
+            if (name != null && !name.isEmpty()){
+                white.setName(name);
+            } else {
+                white.setName("White");
+            }
+        } else {
+            if (name != null && !name.isEmpty()){
+                black.setName(name);
+            } else {
+                black.setName("Black");
+            }
+        }
+        
+        updateLabel();
     }
     
     /**

@@ -25,6 +25,10 @@ public class Player {
         return this.name;
     }
     
+    public void setName(String name){
+        this.name = name;
+    }
+    
     /**
      * Get the side of the Player
      * @return a boolean that represents the side of the Player; true if White, false if Black

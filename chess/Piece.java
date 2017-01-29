@@ -2,15 +2,15 @@
 import java.util.ArrayList;
 
 /**
- * This is Piece, superclass of Arrow, Heart, Star, and Cross
+ * This is Piece, an abstract class for Arrow, Heart, Star, and Cross to inherit from.
  * Each type of pieces has its own rules and movement.
  * @author rfd lab
  */
-public class Piece {
+public abstract class Piece {
     private Player owner;
     
     /**
-     * Super Constructor of each Piece
+     * Constructor for each Piece(s)
      * @param owner the Player who owns this piece.
      */
     public Piece(Player owner){

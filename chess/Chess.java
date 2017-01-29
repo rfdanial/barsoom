@@ -45,7 +45,7 @@ public class Chess extends JFrame{
     }
     
     /**
-     * Creates a menu that contains "New Game", "How to Play" and "About" at the top of the frame.
+     * Creates a menu at the top of the frame.
      * 
      * @return a JMenuBar to be attached at the top of the frame.
      */
@@ -64,6 +64,31 @@ public class Chess extends JFrame{
         });
         
         menu.add(newGameButton);
+        
+        JMenuItem setPlayerName = new JMenuItem("Edit players' name");
+        setPlayerName.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.CTRL_MASK));
+        setPlayerName.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                JPanel pane = new JPanel(new GridLayout(2, 2, 1, 1));
+                
+                pane.add(new JLabel("White's name: "));
+                JTextField whiteBox = new JTextField();
+                pane.add(whiteBox);
+                
+                pane.add(new JLabel("Black's name: "));
+                JTextField blackBox = new JTextField();
+                pane.add(blackBox);
+                
+                int result = JOptionPane.showOptionDialog(null, pane, "Set Players' name", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new String[] {"Done", "Cancel"}, JOptionPane.NO_OPTION);
+                if (result == JOptionPane.YES_OPTION){
+                    game.setPlayerName(whiteBox.getText(), true);
+                    game.setPlayerName(blackBox.getText(), false);
+                }
+            }
+        });
+        
+        menu.add(setPlayerName);
         
         JMenuItem saveGameButton = new JMenuItem("Save game");
         saveGameButton.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
