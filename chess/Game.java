@@ -2,10 +2,15 @@
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileNotFoundException;
+import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JLabel;
 
 /**
@@ -44,20 +49,107 @@ public class Game{
     /**
      * Save the current progress of the game.
      */
-    public void saveGame(){
+    public String saveGame(){
+        now = destination = null;
         
+        File file = new File(SAVEFILE);
+        FileWriter writer;
+        try {
+            writer = new FileWriter(file);
+            writer.write("" + this.turn + "\n");
+            writer.write(white.getName() + "\n");
+            writer.write(black.getName() + "\n");
+            writer.write(currentPlayer.getName() + "\n");
+            
+            for (int i = 0; i < ROW * COL; i++){
+                if (board[i].hasPiece()){
+                    Piece piece = board[i].getPiece();
+                    
+                    writer.write(piece.getOwner().getName() + "\n");
+                    writer.write(piece.toString() + "\n");
+                    writer.write("" + i + "\n");
+                }
+                
+            }
+            
+            writer.flush();
+            writer.close();
+            return "Current progress saved!";
+        } catch (IOException ex) {
+            return ex.toString();
+        }
     }
     
     /**
      * Load the previous progress of the game.
      * @return true if there's a previous progress, false if there's none
      */
-    public boolean loadGame(){
+    public String loadGame(){
+        now = destination = null;
+        
         try{
-            FileReader reader = new FileReader(SAVEFILE);
-            return true;
+            File file = new File(SAVEFILE);
+            Scanner scanner = new Scanner(file);
+            
+            // turn
+            // white's name
+            // black's name
+            // current turn
+            this.turn = scanner.nextInt();
+            
+            System.out.println("turn: " + turn);
+            
+            this.white = new Player(scanner.next(), true);
+            this.black = new Player(scanner.next(), false);
+            
+            System.out.println(white.getName() + " vs " + black.getName() + "\n");
+            
+            if (scanner.next().equals(white.getName())){
+                currentPlayer = white;
+            } else {
+                currentPlayer = black;
+            }
+            
+            System.out.println("CurrentPlayer: " + currentPlayer.getName());
+            
+            for(int i = 0; i < ROW * COL; i++){
+                board[i].deset();
+            }
+            
+            while (scanner.hasNext()){
+                //owner's name
+                //piece type
+                //index
+                String ownerName = scanner.next();
+                String pieceType = scanner.next();
+                int index = scanner.nextInt();
+                
+                Player owner;
+                
+                if (ownerName.equals(white.getName())){
+                    owner = white;
+                } else {
+                    owner = black;
+                }
+                
+                
+                if (pieceType.equals("Arrow")){
+                    board[index].setPiece(new Arrow(owner));
+                } else if (pieceType.equals("Heart")){
+                    board[index].setPiece(new Heart(owner));
+                } else if (pieceType.equals("Star")){
+                    board[index].setPiece(new Star(owner));
+                } else if (pieceType.equals("Cross")){
+                    board[index].setPiece(new Cross(owner));
+                }
+            }
+            
+            updateLabel();
+            
+            return "Previous progress loaded!";
         } catch (Exception ex){
-            return false;
+            ex.printStackTrace();
+            return ex.toString();
         }
     }
     

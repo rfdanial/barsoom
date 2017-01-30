@@ -95,7 +95,7 @@ public class Chess extends JFrame{
         saveGameButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){
-                game.saveGame();
+                showSimpleDialog(game.saveGame(), "Attention");
             }
         });
         
@@ -106,7 +106,7 @@ public class Chess extends JFrame{
         loadGameButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){
-                game.loadGame();
+                showSimpleDialog(game.loadGame(), "Attention");
             }
         });
         
