@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * RULE: 
  * The Cross can only move diagonally, but can go any distance.
  * 
- * @author
+ * @author Arif Danial
  */
 public class Cross extends Piece {
     
@@ -25,9 +25,11 @@ public class Cross extends Piece {
      * @param nowX the current column inside the grid
      * @param nowY the current row inside the grid
      * @return an ArrayList of rows and columns of legal positions based on current row and column
+     * 
+     * @author Arif Danial
      */
     @Override
-    public ArrayList<RowCol> legals(int nowX, int nowY){
+    public ArrayList<RowCol> getLegals(int nowY, int nowX){
         ArrayList<RowCol> legals = new ArrayList<RowCol>();        
                 
         for(int i = 1; i < 5; i++){            
@@ -58,6 +60,8 @@ public class Cross extends Piece {
     /**
      * Get the filename of the image based on the owner's isWhite
      * @return a string that represents the file name of the image
+     * 
+     * @author Arif Danial
      */
     @Override
     public String getFilename(){
@@ -71,6 +75,8 @@ public class Cross extends Piece {
     /**
      * Get the type of piece
      * @return a string that represents the type of this piece
+     * 
+     * @author Arif Danial
      */
     @Override
     public String toString() {

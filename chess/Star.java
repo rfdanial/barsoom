@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * RULE: 
  * The Star can move ONE or TWO steps towards any direction.
  * 
- * @author rfd lab
+ * @author Arif Danial
  */
 public class Star extends Piece {
     
@@ -25,16 +25,18 @@ public class Star extends Piece {
      * @param nowX the current column inside the grid
      * @param nowY the current row inside the grid
      * @return an ArrayList of rows and columns of legal positions based on current row and column
+     * 
+     * @author Arif Danial
      */
     @Override
-    public ArrayList<RowCol> legals(int nowX, int nowY){
+    public ArrayList<RowCol> getLegals(int nowY, int nowX){
         ArrayList<RowCol> legals = new ArrayList<RowCol>();
         
         for(int y = nowY - 2; y <= nowY + 2; y++){
             for (int x = nowX - 2; x <= nowX + 2; x++){
                 if ((0 <= y) && (y < 8) && (0 <= x) && (x < 5)){
                     if (y == nowY && x == nowX){
-                        // because we dont want to register "moving to original position" as a move
+                        // because we dont want to register "moving to original position" as a legal position
                         continue;
                     }
                     
@@ -49,6 +51,8 @@ public class Star extends Piece {
     /**
      * Get the filename of the image based on the owner's isWhite
      * @return a string that represents the file name of the image
+     * 
+     * @author Arif Danial
      */
     @Override
     public String getFilename(){
@@ -62,6 +66,8 @@ public class Star extends Piece {
     /**
      * Get the type of piece
      * @return a string that represents the type of this piece
+     * 
+     * @author Arif Danial
      */
     @Override
     public String toString() {

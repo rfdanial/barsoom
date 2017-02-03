@@ -7,16 +7,22 @@ import javax.swing.JButton;
 /**
  * Provides data for each Box inside the grid layout
  * 
- * @author 
+ * @author Hamizan Adli
  */
 public class Box extends JButton{
+    
+    // this is to contains any Piece
     private Piece piece;
+    
+    // this is to provide the color of the current Box
     private Color color;
     
     /**
      * Creates a new Box
      * 
      * @param piece type of piece that this Box is holding, null if empty
+     * 
+     * @author Hamizan Adli
      */
     public Box(Piece piece){
         if (piece != null){
@@ -28,6 +34,8 @@ public class Box extends JButton{
      * Assign this Box to hold a piece
      * 
      * @param piece the piece that is supposed to be inside this Box
+     * 
+     * @author Hamizan Adli
      */
     public void setPiece(Piece piece){
         this.piece = piece;
@@ -36,6 +44,8 @@ public class Box extends JButton{
     
     /**
      * Remove any piece from this Box.
+     * 
+     * @author Hamizan Adli
      */
     public void deset(){
         this.piece = null;
@@ -46,6 +56,8 @@ public class Box extends JButton{
      * Check if there's a piece inside this Box
      * 
      * @return true if this Box has a Piece inside it
+     * 
+     * @author Hamizan Adli
      */
     public boolean hasPiece(){
         return this.piece != null;
@@ -55,7 +67,9 @@ public class Box extends JButton{
      * Check if the Piece inside this Box is owned by the passed Player.
      * 
      * @param player Player to be compared.
-     * @return true if the Piece inside this Box is owned by the passed Player.
+     * @return true if the Piece inside this Box is owned by the passed Player, false if enemy of the passed Player
+     * 
+     * @author Hamizan Adli
      */
     public boolean isThisPlayer(Player player){
         return this.piece.getOwner().getName().equals(player.getName());
@@ -65,6 +79,8 @@ public class Box extends JButton{
      * Get the Piece contained by this Box
      * 
      * @return the Piece contained by this Box
+     * 
+     * @author Hamizan Adli
      */
     public Piece getPiece(){
         return this.piece;
@@ -74,6 +90,8 @@ public class Box extends JButton{
      * Get the Color of this Box's background
      * 
      * @return null if not containing any Piece, GREEN if movable, BLUE if edible
+     * 
+     * @author Hamizan Adli
      */
     public Color getColor(){
         return this.color;
@@ -83,6 +101,8 @@ public class Box extends JButton{
      * Set the Box's background color.
      * 
      * @param color the desired color
+     * 
+     * @author Hamizan Adli
      */
     public void setColor(Color color){
         this.setBackground(color);
@@ -94,6 +114,8 @@ public class Box extends JButton{
      * 
      * @param path the absolute file path
      * @return ImageIcon to be set into a Box
+     * 
+     * @author Hamizan Adli
      */
     public ImageIcon loadImage(String path){
         Image image = new ImageIcon(this.getClass().getResource(path)).getImage();

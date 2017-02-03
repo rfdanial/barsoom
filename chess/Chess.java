@@ -9,19 +9,25 @@ import javax.swing.*;
 /**
  * Manages the GUI of the BarsoomChess game.
  * 
- * @author rfd lab
+ * @author Shukri Armizi, Hamizan Adli
  */
 public class Chess extends JFrame{
+    
+    //this will holds the information about the game
     private Game game;
     
+    //this is to contains the button
     private JPanel gridPanel = new JPanel(new GridLayout(8, 5, 2, 2));
     
+    // the main function
     public static void main(String[] args) {
         Chess chess = new Chess();
     }
     
     /**
      * Create a new Frame for the game.
+     * 
+     * @author Shukri Armizi
      */
     public Chess(){
         super("Barsoom Chess by Team Chill");
@@ -48,6 +54,8 @@ public class Chess extends JFrame{
      * Creates a menu at the top of the frame.
      * 
      * @return a JMenuBar to be attached at the top of the frame.
+     * 
+     * @author Hamizan Adli, Shukri Armizi
      */
     public JMenuBar createTopMenu(){
         JMenuBar menuBar = new JMenuBar();
@@ -173,25 +181,10 @@ public class Chess extends JFrame{
      * 
      * @param message The message to be shown
      * @param title The title of the dialogBox
+     * 
+     * @author Shukri Armizi
      */
     public static void showSimpleDialog(Object message, String title){
         JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
-    }
-    
-    /**
-     * Plays the audio based on the file path of the audio given
-     * 
-     * @param audioPath the file path inside the folder containing the source files/.
-     */
-    public static void playAudio(String audioPath){
-        try{
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(new File(audioPath).getAbsoluteFile());
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioStream);
-            clip.start();
-        }catch(Exception ex){
-            System.out.println("Error: " + ex.getMessage());
-            ex.printStackTrace();
-        }
     }
 }

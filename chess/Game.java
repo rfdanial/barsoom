@@ -16,26 +16,47 @@ import javax.swing.JLabel;
 /**
  * Provides information on current game, and logic/rule for the game.
  * 
- * @author rfd lab
+ * @author Arif Danial, Shukri Armizi, Syawaludin Anas Yusof, Hamizan Adli, Haziq Khan
  */
 public class Game{
+    
+    // the number of rows in the board
     private final static int ROW = 8;
+    
+    // the number of columns in the board
     private final static int COL = 5;
+    
+    // the filename for the file to save the progress of the game
     private final static String SAVEFILE = "save.txt";
     
+    // the turn count
     private int turn;
+    
+    // this will holds information about the White player
     private Player white;
+    
+    // this will holds information about the Black player
     private Player black;
+    
+    // this will refer to who is the current player that can make a move
     private Player currentPlayer;
     
+    // this will refer to the current Box that the user picks
     private Box now;
+    
+    // this will refer to the desired destination after user select a Box (that has a piece)
     private Box destination;
     
+    // the board of the game (8 by 5)
     private Box[] board = new Box[ROW * COL];
+    
+    // a JLabel to update the turn count and the current player
     private JLabel label = new JLabel();
     
     /**
      * Creates a new Game.
+     * 
+     * @author Arif Danial
      */
     public Game(){
         turn = 0;
@@ -48,6 +69,8 @@ public class Game{
     
     /**
      * Save the current progress of the game.
+     * 
+     * @author Hamizan Adli
      */
     public String saveGame(){
         now = destination = null;
@@ -69,20 +92,21 @@ public class Game{
                     writer.write(piece.toString() + "\n");
                     writer.write("" + i + "\n");
                 }
-                
             }
             
             writer.flush();
             writer.close();
             return "Current progress saved!";
         } catch (IOException ex) {
-            return ex.toString();
+            return ex.getMessage();
         }
     }
     
     /**
      * Load the previous progress of the game.
      * @return true if there's a previous progress, false if there's none
+     * 
+     * @author Syawaludin Anas Yusof
      */
     public String loadGame(){
         now = destination = null;
@@ -91,10 +115,6 @@ public class Game{
             File file = new File(SAVEFILE);
             Scanner scanner = new Scanner(file);
             
-            // turn
-            // white's name
-            // black's name
-            // current turn
             this.turn = scanner.nextInt();
             
             System.out.println("turn: " + turn);
@@ -117,9 +137,7 @@ public class Game{
             }
             
             while (scanner.hasNext()){
-                //owner's name
-                //piece type
-                //index
+                
                 String ownerName = scanner.next();
                 String pieceType = scanner.next();
                 int index = scanner.nextInt();
@@ -149,74 +167,28 @@ public class Game{
             return "Previous progress loaded!";
         } catch (Exception ex){
             ex.printStackTrace();
-            return ex.toString();
+            return ex.getMessage();
         }
     }
     
     /**
      * Prepares the board for the game.
+     * 
+     * @author Shukri Armizi
      */
     private void initBoard(){
         for(int i = 0; i < ROW * COL; i++){
             board[i] = new Box(null);
             
-            int row = getRow(i);
-            int col = getCol(i);
+            int nowIndex = i;
             
             board[i].addActionListener(new ActionListener(){
                 @Override
                 public void actionPerformed(ActionEvent e){
-                    int nowIndex = getIndex(row, col);
-                    
                     if (now == null){
-                        if (board[nowIndex].hasPiece() && board[nowIndex].isThisPlayer(currentPlayer)){
-                            now = board[nowIndex];
-                        
-                            ArrayList<RowCol> legals = now.getPiece().legals(col, row);
-
-                            for(int k = 0; k < legals.size(); k++){
-                                int legalRow = legals.get(k).getRow();
-                                int legalCol = legals.get(k).getCol();
-                                int legalId = getIndex(legalRow, legalCol);                            
-
-                                if (0 <= legalId && legalId < ROW * COL){
-                                    if (board[legalId].hasPiece()){
-                                        if (board[legalId].isThisPlayer(currentPlayer) == false){
-                                            board[legalId].setColor(Color.BLUE); // edible
-                                        }
-                                    } else {
-                                        board[legalId].setColor(Color.GREEN); // moveable
-                                    }
-                                }
-                            }
-
-                            destination = null;
-                        }                        
+                        selectPiece(nowIndex);
                     } else if (destination == null){
-                        destination = board[nowIndex];                        
-                        
-                        if (destination.getColor() != null){
-                            // edible / moveable, count as turn
-                            if (destination.hasPiece()){
-                                Piece piece = destination.getPiece();
-                                if (piece.toString().equals("Heart")){
-                                    Chess.showSimpleDialog("Winner: " + currentPlayer.getName() + "!\nPress 'OK' to restart a new Game.", "GAME OVER");
-                                    reset();
-                                    return;
-                                }
-                            }
-                            
-                            destination.setPiece(now.getPiece());
-                            now.deset();
-                            
-                            turnComplete();
-                        }
-                        
-                        for(int k = 0; k < ROW * COL; k++){
-                            board[k].setColor(null);
-                        }
-                        
-                        now = destination = null;
+                        movePiece(nowIndex);
                     }
                 }
             });
@@ -224,7 +196,91 @@ public class Game{
     }
     
     /**
+     * Will select the Piece to move at given index and assign it as Now box
+     * This can only be called if the Now box is null
+     * @param nowIndex the given index to move from
+     * 
+     * @author Arif Danial
+     */
+    private void selectPiece(int nowIndex){
+        if (board[nowIndex].hasPiece() && board[nowIndex].isThisPlayer(currentPlayer)){
+            now = board[nowIndex];
+            
+            int row = getRow(nowIndex);
+            int col = getCol(nowIndex);
+            
+            // get the legal positions that can be a destination of the selected Piece
+            ArrayList<RowCol> legals = now.getPiece().getLegals(row, col);
+
+            for(int k = 0; k < legals.size(); k++){
+                int legalRow = legals.get(k).getRow();
+                int legalCol = legals.get(k).getCol();
+                int legalId = getIndex(legalRow, legalCol);                            
+                
+                // fill the legal destinations with colour
+                if (0 <= legalId && legalId < ROW * COL){
+                    if (board[legalId].hasPiece()){
+                        if (board[legalId].isThisPlayer(currentPlayer) == false){
+                            // if the legal destination at index (legalId) contains enemy's Piece, set it to edible destination
+                            board[legalId].setColor(Color.BLUE); 
+                        }
+                    } else {
+                        //if the legal destination at index (legalId) contains no Piece, set it to moveable destination
+                        board[legalId].setColor(Color.GREEN); 
+                    }
+                }
+            }
+
+            destination = null;
+        }                        
+    }
+    
+    /**
+     * This will move the Piece from the Now box to the Destination Box
+     * This can only be called when the Now box is not null, and the Destination Box is null
+     * @param nowIndex the desired destination index
+     * 
+     * @author Arif Danial
+     */
+    private void movePiece(int nowIndex){
+        destination = board[nowIndex];                        
+                        
+        if (destination.getColor() != null){
+            // edible / moveable, count as turn
+            if (destination.hasPiece()){
+                Piece piece = destination.getPiece();
+
+                // if the Destination is a Heart, currentPlayer will win the game
+                if (piece.toString().equals("Heart")){
+                    Chess.showSimpleDialog("Winner: " + currentPlayer.getName() + "!\nPress 'OK' to restart a new Game.", "GAME OVER");
+
+                    //Prepare a new game
+                    reset();
+                    return;
+                }
+            }
+
+            // move the piece at Now to Destination
+            destination.setPiece(now.getPiece());
+            now.deset();
+
+            // turn is successful
+            turnComplete();
+        }
+        
+        //reset all the color of the board
+        for(int k = 0; k < ROW * COL; k++){
+            board[k].setColor(null);
+        }
+
+        //nullify the Now and Destination box for the next movement
+        now = destination = null;
+    }
+    
+    /**
      * Resets the turn to 0, and randomly pick who will start the game, and arrange the pieces for the game.
+     * 
+     * @author Syawaludin Anas Yusof
      */
     public void reset(){
         Player nextPlayer;
@@ -279,6 +335,8 @@ public class Game{
     /**
      * This will get the label that will be displaying the current turn and the turn count.
      * @return a JLabel object will display necessary information about the current game.
+     * 
+     * @author Shukri Armizi
      */
     public JLabel getLabel(){
         return label;
@@ -288,6 +346,8 @@ public class Game{
      * This will get the Box at the specified index to be bind to a JPanel
      * @param index the index of the desired Box
      * @return a Box object to be added to a JPanel
+     * 
+     * @author Shukri Armizi
      */
     public Box getBox(int index){
         return board[index];
@@ -295,6 +355,8 @@ public class Game{
     
     /**
      * Called when completing a move.
+     * 
+     * @author Syawaludin Anas Yusof
      */
     private void turnComplete(){
         turn++;
@@ -318,6 +380,8 @@ public class Game{
     
     /**
      * For each complete turn, this will be called to rotate the board 180 degree.
+     * 
+     * @author Arif Danial
      */
     private void rotateBoard(){
         int size = ROW * COL;
@@ -344,6 +408,11 @@ public class Game{
         }
     }    
     
+    /**
+     * This is to update which player is making a move currently and the turn count.
+     * 
+     * @author Shukri Armizi
+     */
     private void updateLabel(){
         label.setText("Turn count: " + turn + ", Current player: " + currentPlayer.getName());
     }
@@ -352,6 +421,8 @@ public class Game{
      * Swap the Star with the Cross, and the Cross with the Star based on the passed Player
      * 
      * @param player who owns the piece.
+     * 
+     * @author Hamizan Adli
      */
     private void swapStarCross(Player player){
         for(int i = 0; i < ROW * COL; i++){
@@ -375,6 +446,8 @@ public class Game{
      * Set a new name for a Player based on the Player's isWhite (side)
      * @param name the new name to set to a Player
      * @param isWhite the side of the Player to identify which Player to update
+     * 
+     * @author Haziq Khan
      */
     public void setPlayerName(String name, boolean isWhite){
         if (isWhite) {
@@ -399,6 +472,8 @@ public class Game{
      * @param drow desired row used for index calculation
      * @param dcol desired column used for index calculation
      * @return the calculated index.
+     * 
+     * @author Arif Danial
      */
     private int getIndex(int drow, int dcol){
         return drow * COL + dcol;
@@ -408,6 +483,8 @@ public class Game{
      * Get the row based on given index number.
      * @param index the index of the object.
      * @return the row of the object at the index inside the grid.
+     * 
+     * @author Arif Danial
      */
     private int getRow(int index){
         return index / COL;
@@ -417,6 +494,8 @@ public class Game{
      * Get the column based on given index number.
      * @param index the index of the object
      * @return the column of the object at the index inside the grid.
+     * 
+     * @Author Arif Danial
      */
     private int getCol(int index){
         return index % COL;

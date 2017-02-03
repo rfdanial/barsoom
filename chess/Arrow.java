@@ -8,16 +8,18 @@ import java.util.ArrayList;
  * If it reaches the end of the board, it turns around and 
  * starts heading back the other way.
  * 
- * @author rfd lab
+ * @author Arif Danial
  */
 public class Arrow extends Piece {
     
+    // true if this Arrow is moving downward, false if this arrow is moving upward
     private boolean down;
     
     /**
      * Constructor of Arrow
      * @param owner Player that owns this piece
-     * @param down the direction of this piece is heading
+     * 
+     * @author Arif Danial
      */
     public Arrow(Player owner){
         super(owner);
@@ -31,9 +33,11 @@ public class Arrow extends Piece {
      * @param nowX the current column inside the grid
      * @param nowY the current row inside the grid
      * @return an ArrayList of rows and columns of legal positions based on current row and column
+     * 
+     * @author Arif Danial
      */
     @Override
-    public ArrayList<RowCol> legals(int nowX, int nowY){
+    public ArrayList<RowCol> getLegals(int nowY, int nowX){
         // list of legal rowcols
         ArrayList<RowCol> legals = new ArrayList<RowCol>();
         
@@ -63,6 +67,8 @@ public class Arrow extends Piece {
     /**
      * Get the filename of the image based on the owner's isWhite
      * @return a string that represents the file name of the image
+     * 
+     * @author Arif Danial
      */
     @Override
     public String getFilename(){
@@ -76,6 +82,8 @@ public class Arrow extends Piece {
     /**
      * Get the type of piece
      * @return a string that represents the type of this piece
+     * 
+     * @author Arif Danial
      */
     @Override
     public String toString() {

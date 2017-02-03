@@ -7,13 +7,15 @@ import java.util.ArrayList;
  * The Heart can move only ONE step towards any direction, 
  * the game ends when this piece was killed by the enemy.
  * 
- * @author rfd lab
+ * @author Arif Danial
  */
 public class Heart extends Piece {
     
     /**
      * Constructor of Star
      * @param owner Player that owns this piece
+     * 
+     * @author Arif Danial
      */
     public Heart(Player owner){
         super(owner);
@@ -26,16 +28,18 @@ public class Heart extends Piece {
      * @param nowX the current column inside the grid
      * @param nowY the current row inside the grid
      * @return an ArrayList of rows and columns of legal positions based on current row and column
+     * 
+     * @author Arif Danial
      */
     @Override
-    public ArrayList<RowCol> legals(int nowX, int nowY){
+    public ArrayList<RowCol> getLegals(int nowY, int nowX){
         ArrayList<RowCol> legals = new ArrayList<RowCol>();
         
         for(int y = nowY - 1; y <= nowY + 1; y++){
             for (int x = nowX - 1; x <= nowX + 1; x++){
                 if ((0 <= y) && (y < 8) && (0 <= x) && (x < 5)){
                     if (y == nowY && x == nowX){
-                        // because we dont want to register "moving to original position" as a move
+                        // because we don't want to register "moving to original position" as a legal position
                         continue;
                     }
                     
@@ -50,6 +54,8 @@ public class Heart extends Piece {
     /**
      * Get the filename of the image based on the owner's isWhite
      * @return a string that represents the file name of the image
+     *  
+     * @author Arif Danial
      */
     @Override
     public String getFilename(){
@@ -63,6 +69,8 @@ public class Heart extends Piece {
     /**
      * Get the type of piece
      * @return a string that represents the type of this piece
+     * 
+     * @author Arif Danial
      */
     @Override
     public String toString() {
