@@ -3,14 +3,11 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JLabel;
 
 /**
@@ -221,11 +218,13 @@ public class Game{
                 if (0 <= legalId && legalId < ROW * COL){
                     if (board[legalId].hasPiece()){
                         if (board[legalId].isThisPlayer(currentPlayer) == false){
-                            // if the legal destination at index (legalId) contains enemy's Piece, set it to edible destination
+                            // if the legal destination at index (legalId) contains enemy's Piece
+                            // set it to edible destination
                             board[legalId].setColor(Color.BLUE); 
                         }
                     } else {
-                        //if the legal destination at index (legalId) contains no Piece, set it to moveable destination
+                        //if the legal destination at index (legalId) contains no Piece
+                        // set it to moveable destination
                         board[legalId].setColor(Color.GREEN); 
                     }
                 }
@@ -299,7 +298,6 @@ public class Game{
         
         // reset
         turn = 0;
-        
         now = destination = null;
         
         //clear all the pieces from the board
