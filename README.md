@@ -15,3 +15,7 @@
 6) Compile by using "javac *.java"
 
 7) Run by using "java Chess"
+
+
+Marks: 28.5 / 30.0
+Notes: "First group to submit" - Dr. Ian Tan, Coordinator of Object Oriented Analysis and Design
