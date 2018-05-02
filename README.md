@@ -19,4 +19,4 @@
 
 Marks: 28.5 / 30.0
 
-Notes: "First group to submit" - Dr. Ian Tan, Coordinator of Object Oriented Analysis and Design
+Notes: "First group to submit" - Dr. Ian Chai, Coordinator of Object Oriented Analysis and Design
